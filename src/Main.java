@@ -6,7 +6,6 @@ public class Main {
 		String URL = "jdbc:oracle:thin:@localhost:1521:DBSERVER";
 		String USER = "LEE";
 		String PASS = "redsun";
-		
 		try{
 			Class.forName(DRIVER);
 			Connection con1 = DriverManager.getConnection(URL, USER, PASS);
@@ -67,6 +66,8 @@ public class Main {
 			}catch(Exception e){
 				System.out.println(e.getMessage());
 			}*/
+
+
 			// Prepared Statement
 			/*
 			try{
