@@ -10,7 +10,8 @@ public class Main {
 		QueryConnector queryConnector = new QueryConnector(DRIVER, URL, USER, PASS);
 		ConsoleFlow consoleflow = new ConsoleFlow(queryConnector);
 		DBInitializer initializer = new DBInitializer(queryConnector);
-		initializer.dropAllTables();
+		//initializer.dropAllTables();
+		initializer.allTableInitialize();;
 		//consoleflow.start();
 	}
 }

@@ -40,7 +40,7 @@ public class QueryConnector{
 			Statement statement = this.connection.createStatement();
 			int rowCount = statement.executeUpdate(query);
 			if(rowCount == 0){
-				System.out.println("failed to update: "+query);
+				System.out.println("rowcount = 0, "+query);
 			}
 		}catch(Exception e){
 			System.out.println(e.getMessage());
