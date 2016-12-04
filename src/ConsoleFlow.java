@@ -1,0 +1,114 @@
+import java.util.Scanner;
+public class ConsoleFlow{
+	private Scanner userInputScanner;
+	private AdministatorFlow administratorFlow;
+	private ClientFlow clientFlow; 
+
+	public ConsoleFlow(){
+		this.userInputScanner = new Scanner(System.in);
+		this.administratorFlow = new AdministatorFlow();
+		this.clientFlow = new ClientFlow();
+	}
+
+	public void start(){
+		int userInput;
+		while(true){
+			System.out.println("WELCOME TO OUR THEATER");
+			System.out.println("[0] : Administrator mode");
+			System.out.println("[1] : Client mode");
+			userInput = userInputScanner.nextInt();
+			if(userInput == 0){
+				this.administratorFlow.start();
+			}else{
+				this.clientFlow.start();
+			}
+		}
+	}
+}
+
+class AdministatorFlow{
+	private Scanner userInputScanner;
+	private int userIntInput;
+	private String userStringInput;
+
+	public AdministatorFlow(){
+		this.userInputScanner = new Scanner(System.in);
+	}
+	public void start(){
+
+	}
+}
+class ClientFlow{
+	private Scanner userInputScanner;	
+	private int userIntInput;
+	private String userStringInput;
+	private String id, password, name, birth, address, phone, email;
+
+	public ClientFlow(){
+		this.userInputScanner = new Scanner(System.in);
+	}
+	
+	private void refreshClientInfo(){
+		this.id = null; this.password = null; this.name = null; this.birth = null;
+		this.address = null; this.phone = null;
+	}
+
+	public void start(){
+		System.out.println("Client menu : \n[0] : Login\n[1] : Sign in");
+		userInput = this.userInputScanner.nextInt();
+		// Login
+		if(userInput == 0){
+			int tryCount = 3;
+				System.out.println("Login. input ID:");
+				this.id = this.userInputScanner.nextLine();
+				while(tryCount--){
+					// id check from db
+					System.out.println("["+this.id+"]"+"'s Password :");
+					this.password = this.userInputScanner.nextLine();
+					// pw check from db
+					// if(correct password){
+					//     this.loginFlow()
+					// }else{
+					//     System.out.println("entered wrong password. try again.")
+					// }
+				}
+			System.out.println("you entered wrong password 3 times. bye.");
+		// Sign in
+		}else{
+			System.out.println("Sign in. input valid id :");
+			this.id = this.userInputScanner.nextLine();
+			// id check from db
+			while(true){
+				System.out.println("id:["+this.id+"]"+", input password : ");
+				this.password = this.userInputScanner.nextLine();
+				System.out.println("confirm password again: ");
+				String secondPassword = this.userInputScanner.nextLine();
+				if(this.password != secondPassword){
+					System.out.println("password confirm failed. try again");
+					continue;
+				}else{
+					break;
+				}
+			}
+			System.out.println("input your name :");
+			this.name = userInputScanner.nextLine();
+			System.out.println("input your E-mail");
+			this.email = userInputScanner.nextLine();
+			System.out.println("input your Phone number :");
+			this.phone = userInputScanner.nextLine();
+			System.out.println("input your Address : ");
+			this.address = userInputScanner.nextLine();
+			System.out.println("input your Birthday");
+			this.birth = userInputScanner.nextLine();
+			// input customer tuple into db
+			System.out.println("Congratulations. you're our client from now.");
+		}
+		this.refreshClientInfo();
+	}
+	private void loginFlow(){
+		
+	}
+	private void 
+
+
+}
