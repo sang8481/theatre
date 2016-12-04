@@ -7,14 +7,24 @@ public class DBInitializer{
 		this.queryConnector = queryConnector;
 
 	}
-	public void theaterTableInitialize(){
+	public void allTableInitialize(){
 
 	}
 
 	public void dropAllTables(){
-		String query = "drop table customer"
-		this.queryConnector.executeWith(query);
-		System.out.println("drop table customer done.")
+		String[] querys = new String[]{
+				"drop table customer cascade constraint",
+				"drop table theater cascade constraint",
+				"drop table ticket cascade constraint",
+				"drop table auditorium cascade constraint",
+				"drop table seat cascade constraint",
+				"drop table movie cascade constraint",
+				"drop table schedule cascade constraint",
+		};
+		for(String query : querys){
+			this.queryConnector.executeWith(query);
+		}
+		System.out.println("drop table done.");
 
 	}
 	public void deleteAllTupleInTable(){

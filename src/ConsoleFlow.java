@@ -57,16 +57,16 @@ class ClientFlow{
 
 	public void start(){
 		System.out.println("Client menu : \n[0] : Login\n[1] : Sign in");
-		userInput = this.userInputScanner.nextInt();
+		int userInput = this.userInputScanner.nextInt();
 		// Login
 		if(userInput == 0){
 			int tryCount = 3;
 				System.out.println("Login. input ID:");
-				this.id = this.userInputScanner.nextLine();
+				this.id = this.userInputScanner.next();
 				while(tryCount-- > 0){
 					// id check from db
 					System.out.println("["+this.id+"]"+"'s Password :");
-					this.password = this.userInputScanner.nextLine();
+					this.password = this.userInputScanner.next();
 					// pw check from db
 					// if(correct password){
 					//     this.loginFlow()
@@ -78,14 +78,14 @@ class ClientFlow{
 		// Sign in
 		}else{
 			System.out.println("Sign in. input valid id :");
-			this.id = this.userInputScanner.nextLine();
+			this.id = this.userInputScanner.next();
 			// id check from db
 			while(true){
 				System.out.println("id:["+this.id+"]"+", input password : ");
-				this.password = this.userInputScanner.nextLine();
+				this.password = this.userInputScanner.next();
 				System.out.println("confirm password again: ");
-				String secondPassword = this.userInputScanner.nextLine();
-				if(this.password != secondPassword){
+				String secondPassword = this.userInputScanner.next();
+				if(!this.password.equals(secondPassword)){
 					System.out.println("password confirm failed. try again");
 					continue;
 				}else{
@@ -93,15 +93,15 @@ class ClientFlow{
 				}
 			}
 			System.out.println("input your name :");
-			this.name = userInputScanner.nextLine();
+			this.name = userInputScanner.next();
 			System.out.println("input your E-mail");
-			this.email = userInputScanner.nextLine();
+			this.email = userInputScanner.next();
 			System.out.println("input your Phone number :");
-			this.phone = userInputScanner.nextLine();
+			this.phone = userInputScanner.next();
 			System.out.println("input your Address : ");
-			this.address = userInputScanner.nextLine();
+			this.address = userInputScanner.next();
 			System.out.println("input your Birthday");
-			this.birth = userInputScanner.nextLine();
+			this.birth = userInputScanner.next();
 			// input customer tuple into db
 			System.out.println("Congratulations. you're our client from now.");
 		}
