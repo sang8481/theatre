@@ -7,7 +7,10 @@ public class Main {
 		String USER = "LEE";
 		String PASS = "redsun";
 
-		ConsoleFlow consoleflow = new ConsoleFlow();
+		QueryConnector queryConnector = new QueryConnector(DRIVER, URL, USER, PASS);
+		ConsoleFlow consoleflow = new ConsoleFlow(queryConnector);
+		DBInitializer initializer = new DBInitializer(queryConnector);
+		initializer.theaterTableInitialize();
 		consoleflow.start();
 	}
 }

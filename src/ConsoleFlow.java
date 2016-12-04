@@ -3,11 +3,13 @@ public class ConsoleFlow{
 	private Scanner userInputScanner;
 	private AdministatorFlow administratorFlow;
 	private ClientFlow clientFlow; 
+	private QueryConnector queryConnector;
 
-	public ConsoleFlow(){
+	public ConsoleFlow(QueryConnector queryConnector){
 		this.userInputScanner = new Scanner(System.in);
 		this.administratorFlow = new AdministatorFlow();
 		this.clientFlow = new ClientFlow();
+		this.queryConnector = queryConnector;
 	}
 
 	public void start(){
@@ -61,7 +63,7 @@ class ClientFlow{
 			int tryCount = 3;
 				System.out.println("Login. input ID:");
 				this.id = this.userInputScanner.nextLine();
-				while(tryCount--){
+				while(tryCount-- > 0){
 					// id check from db
 					System.out.println("["+this.id+"]"+"'s Password :");
 					this.password = this.userInputScanner.nextLine();
@@ -108,7 +110,6 @@ class ClientFlow{
 	private void loginFlow(){
 		
 	}
-	private void 
 
 
 }
