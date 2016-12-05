@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.sql.*;
 public class ConsoleFlow{
 	private Scanner userInputScanner;
 	private AdministatorFlow administratorFlow;
@@ -103,20 +104,130 @@ class ClientFlow{
 			String idFromDB, pwFromDB;
 			System.out.println("Login. input ID:");
 			this.id = this.userInputScanner.next();
-			String query = "select * from customer where id = "+this.id
+			String query = "select * from customer where id = "+this.id;
 			ResultSet rs = this.queryConnector.selectResultFrom(query);
-			if(rs.next()){
-				idFromDB = rs.getString(1);
-				pwFromDB = rs.getString(2);
-				System.out.println("["+this.id+"]"+"'s Password :");
-				this.password = this.userInputScanner.next();
-				if(this.password.equals(pwFromDB)){
+			try{
+				if(rs.next()){
+					idFromDB = rs.getString(1);
+					pwFromDB = rs.getString(2);
+					System.out.println("["+this.id+"]"+"'s Password :");
+					this.password = this.userInputScanner.next();
+					// if password correct :
+					if(this.password.equals(pwFromDB)){
+						this.clientMenuFlow(idFromDB, pwFromDB);
 
+					// if password incorrect :
+					}else{
+						System.out.println("invalid password. try again.");
+					}
+
+				// if id not exist in db (not registered)
+				}else{
+					System.out.println("invalid user id. check again.");
 				}
-			}else{
-				System.out.println("invalid user id. check again.");
+			}catch(Exception e){
+				System.out.println(e.toString()+"in login");
 			}
+		// end of while(3--)
 		}
 		System.out.println("you entered wrong password 3 times. bye.");
 	}
+	
+	private void clientMenuFlow(String idFromDB, String pwFromDB){
+		int userChoice;
+		System.out.println("Hello, "+idFromDB+", Here's your choices:");
+		while(true){
+			System.out.println("[0] : Search Movie\n[1] : View all tickets\n[2] : Reserve tickets online\n[3] : Cancel reserved ticket\n[4] : Make payment for ticket\n[5] : Modify personal info\n[6] : withdraw from member");
+			userChoice = this.userInputScanner.nextInt();
+			switch(userChoice){
+				case 0 :
+					this.searchMovie();
+					break;
+				case 1 :
+					this.viewAllTickets(idFromDB);
+					break;
+				case 2 :
+					this.ticketReservation();
+					break;
+				case 3 :
+					this.ticketCancelation();
+					break;
+				case 4 :
+					this.makePayment();
+					break;
+				case 5 :
+					this.modifyPersonalInfo();
+					break;
+				case 6 :
+					this.withdrawFromMember();
+					break;
+				default :
+					System.out.println("invalid input. try one of [0-6].");
+					break;
+			}
+		}
+	}
+	private void searchMovie(){
+		// Reservation rate of each movie :
+		// (reservated seats / all seats in all auditorium where screening specific movie)
+		
+	}
+	private void viewAllTickets(String client_id){
+		String ticketID, clientID, theaterID, auditoriumID, time, seatID, movieID,
+			   payType, payMethod, payState;
+		String[] ticketFields = new String[10];
+		int price;
+		String query = "select * from tickets where client_id = "+ client_id;
+		ResultSet resultSet = this.queryConnector.selectResultFrom(query);
+		try{
+			while(resultSet.next()){
+				for(int i = 0; i < ticketFields.length; i++){
+					ticketFields[i] = resultSet.getString(i+1);
+				}
+				/*ticketID = resultSet.getString(1);
+				clientID = resultSet.getString(2);
+				theaterID =resultSet.getString(3);
+				auditoriumID = resultSet.getString(4);
+				time = resultSet.getString(5);
+				seatID = resultSet.getString(6);
+				movieID = resultSet.getString(7);
+				payType = resultSet.getString(8);
+				payMethod = resultSet.getString(9);
+				*/	
+				for(String s : ticketFields){
+					System.out.printf("%s, ", s);
+				}
+			}
+
+		}catch(Exception e){
+			System.out.println(e.toString()+"in viewAlltickets()");
+		}
+	}
+	private void ticketReservation(){
+
+	}
+	private void ticketCancelation(){
+
+	}
+	private void makePayment(){
+		
+	}
+	private void modifyPersonalInfo(){
+
+	}
+	private void withdrawFromMember(){
+
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

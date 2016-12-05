@@ -119,4 +119,17 @@ public class DBInitializer{
 		System.out.println("delete all tuples in tables done.");
 	}
 
+	public void insertDummyTuples(){
+		String[] querys = new String[]{
+				"insert into theater values('1', 'Megabox', 'Daejeon', '000-0000')",
+				"insert into theater values('2', 'CGV', 'Cheonan', '001-0001')",
+				"insert into auditorium values('M-1', 'Megabox')",
+				"insert into auditorium values('M-2', 'Megabox')",
+				"insert into auditorium values('M-3', 'Megabox')",
+				"insert into auditorium values('C-1', 'CGV')",
+		};
+		for(int i = 1; i <= 40; i++){
+			
+		}
+	}
 }
