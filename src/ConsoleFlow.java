@@ -7,9 +7,9 @@ public class ConsoleFlow{
 
 	public ConsoleFlow(QueryConnector queryConnector){
 		this.userInputScanner = new Scanner(System.in);
-		this.administratorFlow = new AdministatorFlow();
-		this.clientFlow = new ClientFlow();
 		this.queryConnector = queryConnector;
+		this.administratorFlow = new AdministatorFlow(this.queryConnector);
+		this.clientFlow = new ClientFlow(this.queryConnector);
 	}
 
 	public void start(){
@@ -32,9 +32,11 @@ class AdministatorFlow{
 	private Scanner userInputScanner;
 	private int userIntInput;
 	private String userStringInput;
+	private QueryConnector queryConnector;
 
-	public AdministatorFlow(){
+	public AdministatorFlow(QueryConnector queryConnector){
 		this.userInputScanner = new Scanner(System.in);
+		this.queryConnector = queryConnector;
 	}
 	public void start(){
 
@@ -45,12 +47,14 @@ class ClientFlow{
 	private int userIntInput;
 	private String userStringInput;
 	private String id, password, name, birth, address, phone, email;
+	private QueryConnector queryConnector;
 
-	public ClientFlow(){
+	public ClientFlow(QueryConnector queryConnector){
 		this.userInputScanner = new Scanner(System.in);
+		this.queryConnector = queryConnector;
 	}
 	
-	private void refreshClientInfo(){
+	private void refreshClientFields(){
 		this.id = null; this.password = null; this.name = null; this.birth = null;
 		this.address = null; this.phone = null;
 	}
@@ -60,21 +64,7 @@ class ClientFlow{
 		int userInput = this.userInputScanner.nextInt();
 		// Login
 		if(userInput == 0){
-			int tryCount = 3;
-				System.out.println("Login. input ID:");
-				this.id = this.userInputScanner.next();
-				while(tryCount-- > 0){
-					// id check from db
-					System.out.println("["+this.id+"]"+"'s Password :");
-					this.password = this.userInputScanner.next();
-					// pw check from db
-					// if(correct password){
-					//     this.loginFlow()
-					// }else{
-					//     System.out.println("entered wrong password. try again.")
-					// }
-				}
-			System.out.println("you entered wrong password 3 times. bye.");
+			this.loginFlow();
 		// Sign in
 		}else{
 			System.out.println("Sign in. input valid id :");
@@ -105,11 +95,36 @@ class ClientFlow{
 			// input customer tuple into db
 			System.out.println("Congratulations. you're our client from now.");
 		}
-		this.refreshClientInfo();
+		this.refreshClientFields();
 	}
 	private void loginFlow(){
-		
+		int tryCount = 3;
+		while(tryCount-- > 0){
+			String idFromDB, pwFromDB;
+			System.out.println("Login. input ID:");
+			this.id = this.userInputScanner.next();
+			String query = "select * from customer where id = "+this.id
+			ResultSet rs = this.queryConnector.selectResultFrom(query);
+			if(rs.next()){
+				idFromDB = rs.getString(1);
+				pwFromDB = rs.getString(2);
+				System.out.println("["+this.id+"]"+"'s Password :");
+				this.password = this.userInputScanner.next();
+				if(this.password.equals(pwFromDB)){
+			}
+			}else{
+				System.out.println("invalid user id. check again.");
+			}
+			
+			// pw check from db
+			// if(correct password){
+			//     this.loginFlow()
+			//     break;
+			// }else{
+			//     System.out.println("entered wrong password. try again.")
+			// }
+			
+		}
+		System.out.println("you entered wrong password 3 times. bye.");
 	}
-
-
 }
