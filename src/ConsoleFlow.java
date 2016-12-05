@@ -60,14 +60,14 @@ class ClientFlow{
 	}
 
 	public void start(){
-		System.out.println("Client menu : \n[0] : Login\n[1] : Sign in");
+		System.out.println("Client menu : \n[0] : Login\n[1] : Sign up");
 		int userInput = this.userInputScanner.nextInt();
 		// Login
 		if(userInput == 0){
 			this.loginFlow();
-		// Sign in
+		// Sign up
 		}else{
-			System.out.println("Sign in. input valid id :");
+			System.out.println("Sign up. input valid id :");
 			this.id = this.userInputScanner.next();
 			// id check from db
 			while(true){
@@ -111,19 +111,11 @@ class ClientFlow{
 				System.out.println("["+this.id+"]"+"'s Password :");
 				this.password = this.userInputScanner.next();
 				if(this.password.equals(pwFromDB)){
-			}
+
+				}
 			}else{
 				System.out.println("invalid user id. check again.");
 			}
-			
-			// pw check from db
-			// if(correct password){
-			//     this.loginFlow()
-			//     break;
-			// }else{
-			//     System.out.println("entered wrong password. try again.")
-			// }
-			
 		}
 		System.out.println("you entered wrong password 3 times. bye.");
 	}
