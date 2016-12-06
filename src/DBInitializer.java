@@ -11,7 +11,7 @@ public class DBInitializer{
 	public void allTableInitialize(){
 		String[] queries = new String[]{
 			"create table customer"
-				+"(id char(20) not null,"
+				+"(id_ char(20) not null,"
 				+"password char(20) not null,"
 				+"name char(20) not null,"
 				+"phone char(20) not null,"
@@ -20,70 +20,68 @@ public class DBInitializer{
 				+"birth char(10) not null,"
 				+"vip char(3) default 'no',"
 				+"point number,"
-				+"primary key(id))",
+				+"primary key(id_))",
 				
 			"create table theater"
-				+"(id char(20) not null,"
+				+"(id_ char(20) not null,"
 				+"name char(20) not null,"
 				+"address char(50) not null,"
 				+"phone char(20) not null,"
-				+"primary key(id))",
+				+"primary key(id_))",
 				
 			"create table auditorium("
-				+"id char(20) not null,"
+				+"id_ char(20) not null,"
 				+"theater_id char(20) not null,"
-				+"primary key(id),"
-				+"foreign key(theater_id) references theater(id))",
+				+"primary key(id_),"
+				+"foreign key(theater_id) references theater(id_))",
 				
 			"create table seat("
-				+"id char(4) not null,"
+				+"id_ char(4) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
-				+"primary key(id),"
-				+"foreign key(theater_id) references theater(id),"
-				+"foreign key(auditorium_id) references auditorium(id))",
+				+"primary key(id_),"
+				+"foreign key(theater_id) references theater(id_),"
+				+"foreign key(auditorium_id) references auditorium(id_))",
 				
 			"create table movie("
-				+"id char(20) not null,"
+				+"id_ char(20) not null,"
 				+"name char(40) not null,"
 				+"director char(40) not null,"
 				+"grade char(20) not null,"
 				+"description char(100) not null,"
-				+"primary key(id))",
+				+"primary key(id_))",
 
 			"create table schedule("
-				+"date char(10) not null,"
-				+"time char(10) not null,"
+				+"date_ char(10) not null,"
+				+"time_ char(10) not null,"
 				+"auditorium_id char(20) not null,"
 				+"movie_id char(20) not null,"
 				+"theater_id char(20) not null,"
-				+"primary key(date, time),"
-				+"foreign key(auditorium_id) references auditorium(id),"
-				+"foreign key(movie_id) references movie(id),"
-				+"foreign key(theater_id) references theater(id))",
+				+"primary key(date_,time_),"
+				+"foreign key(auditorium_id) references auditorium(id_),"
+				+"foreign key(movie_id) references movie(id_),"
+				+"foreign key(theater_id) references theater(id_))",
 				
 		   "create table ticket("
-				+"id char(20) not null,"
+				+"id_ char(20) not null,"
 				+"customer_id char(20) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
 				+"schedule_date char(10) not null,"
 				+"schedule_time char(10) not null,"
-				+"seat_id char(20) not null,"
+				+"seat_id char(4) not null,"
 				+"movie_id char(20) not null,"
 				+"pay_type char(10) not null,"
 				+"pay_method char(10) not null,"
 				+"pay_state char(10) not null,"
 				+"price number,"
-				+"primary key(id),"
-				+"foreign key(customer_id) references customer(id),"
-				+"foreign key(theater_id) references theater(id),"
-				+"foreign key(auditorium_id) references auditorium(id),"
-				+"foreign key(schedule_date) references schedule(date)"
-				+"foreign key(schedule_time) references schedule(time),"
-				+"foreign key(seat_id) references seat(id),"
-				+"foreign key(movie_id) references movie(id))"
-			
+				+"primary key(id_),"
+				+"foreign key(customer_id) references customer(id_),"
+				+"foreign key(theater_id) references theater(id_),"
+				+"foreign key(auditorium_id) references auditorium(id_),"
+				+"foreign key(schedule_date, schedule_time) references schedule(date_, time_),"
+				+"foreign key(seat_id) references seat(id_),"
+				+"foreign key(movie_id) references movie(id_))"
 		};
 		for(String query : queries){
 			this.queryConnector.executeWith(query);
@@ -174,5 +172,9 @@ public class DBInitializer{
 		queries.add("insert into ticket values('000004', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '5', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
 		queries.add("insert into ticket values('000005', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '6', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
 		queries.add("insert into ticket values('000006', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '10', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		for(String query : queries){
+			this.queryConnector.executeWith(query);
+		}
+		System.out.println("dummy tuple insert completed");
 	}
 }
