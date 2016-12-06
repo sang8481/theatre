@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.*;
 
 public class DBInitializer{
 	private QueryConnector queryConnector;
@@ -8,7 +9,7 @@ public class DBInitializer{
 
 	}
 	public void allTableInitialize(){
-		String[] querys = new String[]{
+		String[] queries = new String[]{
 			"create table customer"
 				+"(id char(20) not null,"
 				+"password char(20) not null,"
@@ -51,11 +52,12 @@ public class DBInitializer{
 				+"primary key(id))",
 
 			"create table schedule("
+				+"date char(10) not null,"
 				+"time char(10) not null,"
 				+"auditorium_id char(20) not null,"
 				+"movie_id char(20) not null,"
 				+"theater_id char(20) not null,"
-				+"primary key(time),"
+				+"primary key(date, time),"
 				+"foreign key(auditorium_id) references auditorium(id),"
 				+"foreign key(movie_id) references movie(id),"
 				+"foreign key(theater_id) references theater(id))",
@@ -65,6 +67,7 @@ public class DBInitializer{
 				+"customer_id char(20) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
+				+"schedule_date char(10) not null,"
 				+"schedule_time char(10) not null,"
 				+"seat_id char(20) not null,"
 				+"movie_id char(20) not null,"
@@ -76,19 +79,20 @@ public class DBInitializer{
 				+"foreign key(customer_id) references customer(id),"
 				+"foreign key(theater_id) references theater(id),"
 				+"foreign key(auditorium_id) references auditorium(id),"
+				+"foreign key(schedule_date) references schedule(date)"
 				+"foreign key(schedule_time) references schedule(time),"
 				+"foreign key(seat_id) references seat(id),"
 				+"foreign key(movie_id) references movie(id))"
 			
 		};
-		for(String query : querys){
+		for(String query : queries){
 			this.queryConnector.executeWith(query);
 		}
 		System.out.println("table initialze completed.");
 	}
 
 	public void dropAllTables(){
-		String[] querys = new String[]{
+		String[] queries = new String[]{
 				"drop table customer cascade constraint",
 				"drop table theater cascade constraint",
 				"drop table ticket cascade constraint",
@@ -97,14 +101,14 @@ public class DBInitializer{
 				"drop table movie cascade constraint",
 				"drop table schedule cascade constraint",
 		};
-		for(String query : querys){
+		for(String query : queries){
 			this.queryConnector.executeWith(query);
 		}
 		System.out.println("drop table done.");
 
 	}
 	public void deleteAllTupleInTable(){
-		String[] querys = new String[]{
+		String[] queries = new String[]{
 				"delete * from customer",
 				"delete * from theater",
 				"delete * from ticket",
@@ -113,23 +117,62 @@ public class DBInitializer{
 				"delete * from movie",
 				"delete * from schedule"
 		};
-		for(String query : querys){
+		for(String query : queries){
 			this.queryConnector.executeWith(query);
 		}
 		System.out.println("delete all tuples in tables done.");
 	}
 
+	// Insert dummy tuples for testing
 	public void insertDummyTuples(){
-		String[] querys = new String[]{
-				"insert into theater values('1', 'Megabox', 'Daejeon', '000-0000')",
-				"insert into theater values('2', 'CGV', 'Cheonan', '001-0001')",
-				"insert into auditorium values('M-1', 'Megabox')",
-				"insert into auditorium values('M-2', 'Megabox')",
-				"insert into auditorium values('M-3', 'Megabox')",
-				"insert into auditorium values('C-1', 'CGV')",
-		};
+		List<String> queries = new ArrayList<String>();
+		
+		// customers
+		queries.add("insert into customer values('userid1', 'password1', 'Brian', '000-0101', 'brian@naver.com', '920517', 'no', 0)");
+		queries.add("insert into customer values('userid2', 'password2', 'Charles', '002-0202', 'charles.google.com', '890202', 'no', 0)");
+		queries.add("insert into customer values('userid3', 'password3', 'Darwin', '003-0303', 'darwin@cs-cnu.org', '930202', 'no', 0)");
+
+		// theaters
+		queries.add("insert into theater values('1', 'Megabox', 'Daejeon', '000-0000')");
+		queries.add("insert into theater values('2', 'CGV', 'Cheonan', '001-0001')");
+
+		// auditoriums
+		queries.add("insert into auditorium values('M-1', 'Megabox')");
+		queries.add("insert into auditorium values('M-2', 'Megabox')");
+		queries.add("insert into auditorium values('M-3', 'Megabox')");
+		queries.add("insert into auditorium values('C-1', 'CGV')");
+
+		// seats
 		for(int i = 1; i <= 40; i++){
-			
+			queries.add("insert into seat values('"+String.valueOf(i)+"', 'Megabox', 'M-1')");
 		}
+		for(int i = 1; i <= 30; i++){
+			queries.add("insert into seat values('"+String.valueOf(i)+"', 'Megabox', 'M-2')");
+		}
+		for(int i = 1; i <= 50; i++){
+			queries.add("insert into seat values('"+String.valueOf(i)+"', 'CGV', 'C-1')");
+		}
+
+		// movies
+		queries.add("insert into movie values('movie_1', 'Gone with the wind', 'Victor Fleming', 'GP', 'descriptions of gone with the wind')");
+		queries.add("insert into movie values('movie_2', 'titanic', 'unknown director', 'RP', 'descriptions of titanic movie')");
+
+		// schedules
+		queries.add("insert into schedule values('161205', '11:00', 'M-1', 'movie_1', 'Megabox')");
+		queries.add("insert into schedule values('161205', '13:50', 'M-1', 'movie_1', 'Megabox')");
+		queries.add("insert into schedule values('161206', '11:00', 'M-2', 'movie_1', 'Megabox')");
+		queries.add("insert into schedule values('161206', '13:50', 'M-2', 'movie_1', 'Megabox')");
+		queries.add("insert into schedule values('161206', '13:50', 'M-3', 'movie_2', 'Megabox')");
+		queries.add("insert into schedule values('161206', '16:00', 'M-3', 'movie_2', 'Megabox')");
+		queries.add("insert into schedule values('161205', '09:20', 'C-1', 'movie_2', 'CGV')");
+		queries.add("insert into schedule values('161205', '11:10', 'C-1', 'movie_2', 'CGV')");
+
+		// tickets
+		queries.add("insert into ticket values('000001', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '1', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000002', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '2', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000003', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '3', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000004', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '5', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000005', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '6', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000006', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '10', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
 	}
 }
