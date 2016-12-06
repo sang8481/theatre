@@ -11,7 +11,7 @@ public class Main {
 		ConsoleFlow consoleflow = new ConsoleFlow(queryConnector);
 		DBInitializer initializer = new DBInitializer(queryConnector);
 		//initializer.dropAllTables();
-		initializer.allTableInitialize();;
+		initializer.allTableInitialize();
 		//consoleflow.start();
 	}
 }
