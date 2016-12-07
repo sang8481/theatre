@@ -169,6 +169,9 @@ public class ClientFlow{
 		System.out.println("movieid user selected : "+movie_id);
 		theater_id = this.chooseAvailableTheater(movie_id);
 		System.out.println("theaterid user selected : "+theater_id);
+		date = this.chooseAvailableDate(movie_id, theater_id);
+		System.out.println("date user selected : " + date);
+
 
 	}
 	
@@ -246,6 +249,10 @@ public class ClientFlow{
 		}catch(Exception e){
 			System.out.println(e.toString()+" in choose theater");
 		}
+		return null;
+	}
+	private String chooseAvailableDate(String movie_id, String theater_id){
+		
 		return null;
 	}
 }
