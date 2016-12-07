@@ -163,6 +163,7 @@ public class ClientFlow{
 	}
 	private void ticketReservation(String client_id){
 		String movie_id = this.chooseAvailableMovie();
+		System.out.println("movieid user selected : "+movie_id);
 
 	}
 	private void ticketCancelation(){
@@ -184,19 +185,30 @@ public class ClientFlow{
 						+"on movie.id_ = schedule.movie_id";	
 		ResultSet rs = this.queryConnector.selectResultFrom(query);
 		try{
-			if(false){
+			if(!rs.isBeforeFirst()){
 				System.out.println("cannot find any movies in DB");
+				return null;
 			}
 			while(rs.next()){
 				movie_id = rs.getString(1);
 				movie_name = rs.getString(2);
 				System.out.println(movie_id + ": "+ movie_name);
 			}
+			System.out.println("select one of movie_ids you want to see.");
+			String userSelectedMovie = this.userInputScanner.next();
+			String queryByUser = "select id_, name from movie where id_="+userSelectedMovie;
+			ResultSet rs_b = this.queryConnector.selectResultFrom(queryByUser);
+			if(!rs_b.isBeforeFirst()){
+				System.out.println("You choose wrong movie_id. try agiain.");
+			}else{
+				return userSelectedMovie;
+			}
+
 			
 		}catch(Exception e){
 			System.out.println(e.toString()+"in login");
 		}
-		return "movie_id";
+		return null;
 	}
 }
 

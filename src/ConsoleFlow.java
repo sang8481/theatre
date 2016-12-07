@@ -17,13 +17,17 @@ public class ConsoleFlow{
 		int userInput;
 		while(true){
 			System.out.println("WELCOME TO OUR THEATER");
-			System.out.println("[0] : Administrator mode");
-			System.out.println("[1] : Client mode");
+			System.out.println("[0] : Administrator mode\n[1] : Client mode\n[2] : Exit");
 			userInput = userInputScanner.nextInt();
 			if(userInput == 0){
 				this.administratorFlow.start();
-			}else{
+			}else if(userInput == 1){
 				this.clientFlow.start();
+			}else if(userInput == 2){
+				System.out.println("Bye!");
+				break;
+			}else{
+				System.out.println("invalid input. try again.");
 			}
 		}
 	}
