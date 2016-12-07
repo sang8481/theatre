@@ -136,6 +136,7 @@ class ClientFlow{
 	private void clientMenuFlow(String idFromDB, String pwFromDB){
 		int userChoice;
 		System.out.println("Hello, "+idFromDB+", Here's your choices:");
+		// loop forever
 		while(true){
 			System.out.println("[0] : Search Movie\n[1] : View all tickets\n[2] : Reserve tickets online\n[3] : Cancel reserved ticket\n[4] : Make payment for ticket\n[5] : Modify personal info\n[6] : withdraw from member");
 			userChoice = this.userInputScanner.nextInt();
@@ -147,7 +148,7 @@ class ClientFlow{
 					this.viewAllTickets(idFromDB);
 					break;
 				case 2 :
-					this.ticketReservation();
+					this.ticketReservation(idFromDB);
 					break;
 				case 3 :
 					this.ticketCancelation();
@@ -203,7 +204,8 @@ class ClientFlow{
 			System.out.println(e.toString()+"in viewAlltickets()");
 		}
 	}
-	private void ticketReservation(){
+	private void ticketReservation(String client_id){
+		String movie_id = this.chooseAvailableMovie();
 
 	}
 	private void ticketCancelation(){
@@ -217,6 +219,36 @@ class ClientFlow{
 	}
 	private void withdrawFromMember(){
 
+	}
+	private String chooseAvailableMovie(){
+
+		String query = "select distinct movie.name, "
+						+"from schedule inner join movie"
+						+"on movie.id_ = schedule.movie_id";	
+		ResultSet rs = this.queryConnector.selectResultFrom(query);
+		try{
+			if(rs.next()){
+				idFromDB = rs.getString(1);
+				pwFromDB = rs.getString(2);
+				System.out.println("["+this.id+"]"+"'s Password :");
+				this.password = this.userInputScanner.next();
+				// if password correct :
+				if(this.password.equals(pwFromDB)){
+					this.clientMenuFlow(idFromDB, pwFromDB);
+
+				// if password incorrect :
+				}else{
+					System.out.println("invalid password. try again.");
+				}
+
+			// if id not exist in db (not registered)
+			}else{
+				System.out.println("invalid user id. check again.");
+			}
+		}catch(Exception e){
+			System.out.println(e.toString()+"in login");
+		}
+	
 	}
 }
 

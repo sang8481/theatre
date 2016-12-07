@@ -52,12 +52,11 @@ public class DBInitializer{
 				+"primary key(id_))",
 
 			"create table schedule("
-				+"date_ char(10) not null,"
-				+"time_ char(10) not null,"
+				+"time_ date not null,"
 				+"auditorium_id char(20) not null,"
 				+"movie_id char(20) not null,"
 				+"theater_id char(20) not null,"
-				+"primary key(date_,time_),"
+				+"primary key(time_),"
 				+"foreign key(auditorium_id) references auditorium(id_),"
 				+"foreign key(movie_id) references movie(id_),"
 				+"foreign key(theater_id) references theater(id_))",
@@ -67,8 +66,7 @@ public class DBInitializer{
 				+"customer_id char(20) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
-				+"schedule_date char(10) not null,"
-				+"schedule_time char(10) not null,"
+				+"schedule_time date not null,"
 				+"seat_id char(4) not null,"
 				+"movie_id char(20) not null,"
 				+"pay_type char(10) not null,"
@@ -79,7 +77,7 @@ public class DBInitializer{
 				+"foreign key(customer_id) references customer(id_),"
 				+"foreign key(theater_id) references theater(id_),"
 				+"foreign key(auditorium_id) references auditorium(id_),"
-				+"foreign key(schedule_date, schedule_time) references schedule(date_, time_),"
+				+"foreign key(schedule_time) references schedule(time_),"
 				+"foreign key(seat_id) references seat(id_),"
 				+"foreign key(movie_id) references movie(id_))"
 		};
@@ -156,7 +154,7 @@ public class DBInitializer{
 		queries.add("insert into movie values('movie_2', 'titanic', 'unknown director', 'RP', 'descriptions of titanic movie')");
 
 		// schedules
-		queries.add("insert into schedule values('161205', '11:00', 'M-1', 'movie_1', 'Megabox')");
+		queries.add("insert into schedule values('to_date()', 'M-1', 'movie_1', 'Megabox')");
 		queries.add("insert into schedule values('161205', '13:50', 'M-1', 'movie_1', 'Megabox')");
 		queries.add("insert into schedule values('161206', '11:00', 'M-2', 'movie_1', 'Megabox')");
 		queries.add("insert into schedule values('161206', '13:50', 'M-2', 'movie_1', 'Megabox')");
