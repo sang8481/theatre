@@ -11,9 +11,9 @@ public class Main {
 		ConsoleFlow consoleflow = new ConsoleFlow(queryConnector);
 		DBInitializer initializer = new DBInitializer(queryConnector);
 		initializer.deleteAllTupleInTable();
-		//initializer.dropAllTables();
-		//initializer.allTableInitialize();
-		//initializer.insertDummyTuples();
+		initializer.dropAllTables();
+		initializer.allTableInitialize();
+		initializer.insertDummyTuples();
 		//consoleflow.start();
 	}
 }

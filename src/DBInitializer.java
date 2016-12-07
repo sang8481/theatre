@@ -39,7 +39,7 @@ public class DBInitializer{
 				+"id_ char(4) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
-				+"primary key(id_),"
+				+"primary key(id_, theater_id, auditorium_id),"
 				+"foreign key(theater_id) references theater(id_) on delete cascade,"
 				+"foreign key(auditorium_id) references auditorium(id_) on delete cascade)",
 				
@@ -69,16 +69,14 @@ public class DBInitializer{
 				+"schedule_time date not null,"
 				+"seat_id char(4) not null,"
 				+"movie_id char(20) not null,"
-				+"pay_type char(10) not null,"
-				+"pay_method char(10) not null,"
-				+"pay_state char(10) not null,"
+				+"pay_type char(20) not null,"
+				+"pay_method char(20) not null,"
+				+"pay_state char(20) not null,"
 				+"price number,"
 				+"primary key(id_),"
 				+"foreign key(customer_id) references customer(id_) on delete cascade,"
-				+"foreign key(theater_id) references theater(id_) on delete cascade,"
-				+"foreign key(auditorium_id) references auditorium(id_) on delete cascade,"
 				+"foreign key(schedule_time) references schedule(time_) on delete cascade,"
-				+"foreign key(seat_id) references seat(id_) on delete cascade,"
+				+"foreign key(seat_id, theater_id, auditorium_id) references seat(id_, theater_id, auditorium_id) on delete cascade,"
 				+"foreign key(movie_id) references movie(id_) on delete cascade)"
 		};
 		for(String query : queries){
@@ -143,34 +141,35 @@ public class DBInitializer{
 			queries.add("insert into seat values('"+String.valueOf(i)+"', '1', 'M-1')");
 		}
 		for(int i = 1; i <= 30; i++){
-			//queries.add("insert into seat values('"+String.valueOf(i)+"', '1', 'M-2')");
+			queries.add("insert into seat values('"+String.valueOf(i)+"', '1', 'M-2')");
 		}
 		for(int i = 1; i <= 50; i++){
-			//queries.add("insert into seat values('"+String.valueOf(i)+"', '2', 'C-1')");
+			queries.add("insert into seat values('"+String.valueOf(i)+"', '2', 'C-1')");
 		}
-		/*
+		
 		// movies
 		queries.add("insert into movie values('movie_1', 'Gone with the wind', 'Victor Fleming', 'GP', 'descriptions of gone with the wind')");
 		queries.add("insert into movie values('movie_2', 'titanic', 'unknown director', 'RP', 'descriptions of titanic movie')");
-
+		
 		// schedules
-		queries.add("insert into schedule values('to_date()', 'M-1', 'movie_1', 'Megabox')");
-		queries.add("insert into schedule values('161205', '13:50', 'M-1', 'movie_1', 'Megabox')");
-		queries.add("insert into schedule values('161206', '11:00', 'M-2', 'movie_1', 'Megabox')");
-		queries.add("insert into schedule values('161206', '13:50', 'M-2', 'movie_1', 'Megabox')");
-		queries.add("insert into schedule values('161206', '13:50', 'M-3', 'movie_2', 'Megabox')");
-		queries.add("insert into schedule values('161206', '16:00', 'M-3', 'movie_2', 'Megabox')");
-		queries.add("insert into schedule values('161205', '09:20', 'C-1', 'movie_2', 'CGV')");
-		queries.add("insert into schedule values('161205', '11:10', 'C-1', 'movie_2', 'CGV')");
-
+		// extract time out of 'DATE' object : 'select to_char(time_, 'YYYY-MM-DD HH:MI') from schedule'
+		queries.add("insert into schedule values(to_date('161205 11:20', 'yymmdd hh24:mi'), 'M-1', 'movie_1', '1')");
+		queries.add("insert into schedule values(to_date('161205 13:40', 'yymmdd hh24:mi'), 'M-1', 'movie_1', '1')");
+		queries.add("insert into schedule values(to_date('161205 11:40', 'yymmdd hh24:mi'), 'M-2', 'movie_1', '1')");
+		queries.add("insert into schedule values(to_date('161205 13:00', 'yymmdd hh24:mi'), 'M-2', 'movie_1', '1')");
+		queries.add("insert into schedule values(to_date('161206 11:20', 'yymmdd hh24:mi'), 'M-3', 'movie_2', '1')");
+		queries.add("insert into schedule values(to_date('161206 14:00', 'yymmdd hh24:mi'), 'M-3', 'movie_2', '1')");
+		queries.add("insert into schedule values(to_date('161206 09:50', 'yymmdd hh24:mi'), 'C-1', 'movie_2', '2')");
+		queries.add("insert into schedule values(to_date('161206 11:40', 'yymmdd hh24:mi'), 'C-1', 'movie_2', '2')");
+		
 		// tickets
-		queries.add("insert into ticket values('000001', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '1', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		queries.add("insert into ticket values('000002', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '2', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		queries.add("insert into ticket values('000003', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '3', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		queries.add("insert into ticket values('000004', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '5', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		queries.add("insert into ticket values('000005', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '6', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		queries.add("insert into ticket values('000006', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '10', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
-		*/
+		queries.add("insert into ticket values('000001', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '1', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000002', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '2', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000003', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '3', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000004', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '5', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000005', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '6', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		queries.add("insert into ticket values('000006', 'userid2', '1', 'M-1', to_date('161205 11:20', 'yymmdd hh24:mi'), '10', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		
 		for(String query : queries){
 			this.queryConnector.executeWith(query);
 		}
