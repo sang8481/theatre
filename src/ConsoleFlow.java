@@ -221,34 +221,25 @@ class ClientFlow{
 
 	}
 	private String chooseAvailableMovie(){
-
-		String query = "select distinct movie.name, "
+		String movie_id, movie_name;
+		String query = "select distinct movie.id_, movie.name"
 						+"from schedule inner join movie"
 						+"on movie.id_ = schedule.movie_id";	
 		ResultSet rs = this.queryConnector.selectResultFrom(query);
 		try{
-			if(rs.next()){
-				idFromDB = rs.getString(1);
-				pwFromDB = rs.getString(2);
-				System.out.println("["+this.id+"]"+"'s Password :");
-				this.password = this.userInputScanner.next();
-				// if password correct :
-				if(this.password.equals(pwFromDB)){
-					this.clientMenuFlow(idFromDB, pwFromDB);
-
-				// if password incorrect :
-				}else{
-					System.out.println("invalid password. try again.");
-				}
-
-			// if id not exist in db (not registered)
-			}else{
-				System.out.println("invalid user id. check again.");
+			if(false){
+				System.out.println("cannot find any movies in DB");
 			}
+			while(rs.next()){
+				movie_id = rs.getString(1);
+				movie_name = rs.getString(2);
+				System.out.println(movie_id + ": "+ movie_name);
+			}
+			
 		}catch(Exception e){
 			System.out.println(e.toString()+"in login");
 		}
-	
+		return "movie_id";
 	}
 }
 

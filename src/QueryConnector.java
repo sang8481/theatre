@@ -51,7 +51,8 @@ public class QueryConnector{
 	public boolean executePreparedStatement(PreparedStatement preparedStatement){
 		try{
 			int rowCount = preparedStatement.executeUpdate();
-			if(rowCount == 0){
+			if(rowCount != 0){
+				System.out.println("fail in prepared statement");
 				return false;
 			}
 		}catch(Exception e){

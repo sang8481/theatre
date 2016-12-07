@@ -33,15 +33,15 @@ public class DBInitializer{
 				+"id_ char(20) not null,"
 				+"theater_id char(20) not null,"
 				+"primary key(id_),"
-				+"foreign key(theater_id) references theater(id_))",
+				+"foreign key(theater_id) references theater(id_) on delete cascade)",
 				
 			"create table seat("
 				+"id_ char(4) not null,"
 				+"theater_id char(20) not null,"
 				+"auditorium_id char(20) not null,"
 				+"primary key(id_),"
-				+"foreign key(theater_id) references theater(id_),"
-				+"foreign key(auditorium_id) references auditorium(id_))",
+				+"foreign key(theater_id) references theater(id_) on delete cascade,"
+				+"foreign key(auditorium_id) references auditorium(id_) on delete cascade)",
 				
 			"create table movie("
 				+"id_ char(20) not null,"
@@ -58,8 +58,8 @@ public class DBInitializer{
 				+"theater_id char(20) not null,"
 				+"primary key(time_),"
 				+"foreign key(auditorium_id) references auditorium(id_),"
-				+"foreign key(movie_id) references movie(id_),"
-				+"foreign key(theater_id) references theater(id_))",
+				+"foreign key(movie_id) references movie(id_) on delete cascade,"
+				+"foreign key(theater_id) references theater(id_) on delete cascade)",
 				
 		   "create table ticket("
 				+"id_ char(20) not null,"
@@ -74,12 +74,12 @@ public class DBInitializer{
 				+"pay_state char(10) not null,"
 				+"price number,"
 				+"primary key(id_),"
-				+"foreign key(customer_id) references customer(id_),"
-				+"foreign key(theater_id) references theater(id_),"
-				+"foreign key(auditorium_id) references auditorium(id_),"
-				+"foreign key(schedule_time) references schedule(time_),"
-				+"foreign key(seat_id) references seat(id_),"
-				+"foreign key(movie_id) references movie(id_))"
+				+"foreign key(customer_id) references customer(id_) on delete cascade,"
+				+"foreign key(theater_id) references theater(id_) on delete cascade,"
+				+"foreign key(auditorium_id) references auditorium(id_) on delete cascade,"
+				+"foreign key(schedule_time) references schedule(time_) on delete cascade,"
+				+"foreign key(seat_id) references seat(id_) on delete cascade,"
+				+"foreign key(movie_id) references movie(id_) on delete cascade)"
 		};
 		for(String query : queries){
 			this.queryConnector.executeWith(query);
@@ -105,13 +105,13 @@ public class DBInitializer{
 	}
 	public void deleteAllTupleInTable(){
 		String[] queries = new String[]{
-				"delete * from customer",
-				"delete * from theater",
-				"delete * from ticket",
-				"delete * from auditorium",
-				"delete * from seat",
-				"delete * from movie",
-				"delete * from schedule"
+				"delete from customer",
+				"delete from theater",
+				"delete from ticket",
+				"delete from auditorium",
+				"delete from seat",
+				"delete from movie",
+				"delete from schedule"
 		};
 		for(String query : queries){
 			this.queryConnector.executeWith(query);
@@ -124,31 +124,31 @@ public class DBInitializer{
 		List<String> queries = new ArrayList<String>();
 		
 		// customers
-		queries.add("insert into customer values('userid1', 'password1', 'Brian', '000-0101', 'brian@naver.com', '920517', 'no', 0)");
-		queries.add("insert into customer values('userid2', 'password2', 'Charles', '002-0202', 'charles.google.com', '890202', 'no', 0)");
-		queries.add("insert into customer values('userid3', 'password3', 'Darwin', '003-0303', 'darwin@cs-cnu.org', '930202', 'no', 0)");
+		queries.add("insert into customer values('userid1', 'password1', 'Brian', '000-0101', 'brian@naver.com', 'address of brian', '920517', 'no', 0)");
+		queries.add("insert into customer values('userid2', 'password2', 'Charles', '002-0202', 'charles.google.com', 'address of charles', '890202', 'no', 0)");
+		queries.add("insert into customer values('userid3', 'password3', 'Darwin', '003-0303', 'darwin@cs-cnu.org', 'address of darwins', '930202', 'no', 0)");
 
 		// theaters
 		queries.add("insert into theater values('1', 'Megabox', 'Daejeon', '000-0000')");
 		queries.add("insert into theater values('2', 'CGV', 'Cheonan', '001-0001')");
 
 		// auditoriums
-		queries.add("insert into auditorium values('M-1', 'Megabox')");
-		queries.add("insert into auditorium values('M-2', 'Megabox')");
-		queries.add("insert into auditorium values('M-3', 'Megabox')");
-		queries.add("insert into auditorium values('C-1', 'CGV')");
-
-		// seats
+		queries.add("insert into auditorium values('M-1', '1')");
+		queries.add("insert into auditorium values('M-2', '1')");
+		queries.add("insert into auditorium values('M-3', '1')");
+		queries.add("insert into auditorium values('C-1', '2')");
+		
+		// seat
 		for(int i = 1; i <= 40; i++){
-			queries.add("insert into seat values('"+String.valueOf(i)+"', 'Megabox', 'M-1')");
+			queries.add("insert into seat values('"+String.valueOf(i)+"', '1', 'M-1')");
 		}
 		for(int i = 1; i <= 30; i++){
-			queries.add("insert into seat values('"+String.valueOf(i)+"', 'Megabox', 'M-2')");
+			//queries.add("insert into seat values('"+String.valueOf(i)+"', '1', 'M-2')");
 		}
 		for(int i = 1; i <= 50; i++){
-			queries.add("insert into seat values('"+String.valueOf(i)+"', 'CGV', 'C-1')");
+			//queries.add("insert into seat values('"+String.valueOf(i)+"', '2', 'C-1')");
 		}
-
+		/*
 		// movies
 		queries.add("insert into movie values('movie_1', 'Gone with the wind', 'Victor Fleming', 'GP', 'descriptions of gone with the wind')");
 		queries.add("insert into movie values('movie_2', 'titanic', 'unknown director', 'RP', 'descriptions of titanic movie')");
@@ -170,6 +170,7 @@ public class DBInitializer{
 		queries.add("insert into ticket values('000004', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '5', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
 		queries.add("insert into ticket values('000005', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '6', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
 		queries.add("insert into ticket values('000006', 'userid2', 'Megabox', 'M-1', '161205', '13:50', '10', 'movie_1', 'online', 'credit_card', 'unpaid', 11000)");
+		*/
 		for(String query : queries){
 			this.queryConnector.executeWith(query);
 		}
