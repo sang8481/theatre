@@ -159,6 +159,7 @@ public class DBInitializer{
 		queries.add("insert into schedule values(to_date('161205 13:00', 'yymmdd hh24:mi'), 'M-2', 'movie_1', '1')");
 		queries.add("insert into schedule values(to_date('161206 11:20', 'yymmdd hh24:mi'), 'M-3', 'movie_2', '1')");
 		queries.add("insert into schedule values(to_date('161206 14:00', 'yymmdd hh24:mi'), 'M-3', 'movie_2', '1')");
+		queries.add("insert into schedule values(to_date('161206 04:50', 'yymmdd hh24:mi'), 'C-1', 'movie_1', '2')");
 		queries.add("insert into schedule values(to_date('161206 09:50', 'yymmdd hh24:mi'), 'C-1', 'movie_2', '2')");
 		queries.add("insert into schedule values(to_date('161206 11:40', 'yymmdd hh24:mi'), 'C-1', 'movie_2', '2')");
 		
